@@ -51,7 +51,7 @@ def make_points():
 ##  https://school.stockcharts.com/doku.php?id=technical_indicators:bollinger_bands  ##
 ##  https://www.investopedia.com/terms/r/rsi.asp  ##
 
-apikey = input('API key: ')
+apikey = input('API Key: ')
 symbol = input('Ticker: ')
 
 base_url = 'https://www.alphavantage.co/query?'
@@ -90,7 +90,7 @@ for i in range(20):
     date.pop()
 ##
 
-headings = ['Date', 'Upper Band', 'Middle Band', 'Lower Band', 'Actual', 'RSI']
+headings = ['Date', 'Upper Band', 'Middle Band', 'Lower Band', 'Actual']#, 'RSI']
 upper = []
 middle = []
 lower = []
@@ -163,49 +163,52 @@ chart.set_y_axis({
     'max': math.ceil(highest)
     })
 
+worksheet.insert_chart('H2', chart)
+
+
 ## acquire the RSI indicator  ##
-base_url1 = 'https://www.alphavantage.co/query?'
-parameters1 = {'function' : 'RSI',    
-              'symbol' : symbol,                            
-              'interval' : 'daily',                        
-              'time_period' : 10,
-              'series_type': 'close',
-              'datatype': 'json',
-              'apikey' : apikey                             
-              }
+## This is now a premium endpoint ##
 
-response1 = requests.get(base_url1, params=parameters1)
-jprint(response1.json())
+##base_url1 = 'https://www.alphavantage.co/query?'
+##parameters1 = {'function' : 'RSI',    
+##              'symbol' : symbol,                            
+##              'interval' : 'daily',                        
+##              'time_period' : 10,
+##              'series_type': 'close',
+##              'datatype': 'json',
+##              'apikey' : apikey                             
+##              }
 
-for dates in reversed(date):
-    try:
-        RSI.append(float(response1.json()["Technical Analysis: RSI"][dates]["RSI"]))
-    except:
-        pass
+##response1 = requests.get(base_url1, params=parameters1)
+##jprint(response1.json())
 
-worksheet.write_column('F2', RSI)
-
-chart1 = workbook.add_chart({'type': 'line'})
-chart1.add_series({
-    'name': '=Sheet1!$F$1',
-    'values': '=Sheet1!$F$2:$F$181',
-    'line': {
-        'color': 'purple'
-        }
-    })
-
-chart1.set_x_axis({
-    'label_position': 'none'
-    })
-
-chart1.set_y_axis({
-    'min': 0,
-    'max': 100
-    })
+##for dates in reversed(date):
+##    try:
+##        RSI.append(float(response1.json()["Technical Analysis: RSI"][dates]["RSI"]))
+##    except:
+##        pass
 ##
-
-worksheet.insert_chart('A2', chart)
-worksheet.insert_chart('A9', chart1)
+##worksheet.write_column('F2', RSI)
+##
+##chart1 = workbook.add_chart({'type': 'line'})
+##chart1.add_series({
+##    'name': '=Sheet1!$F$1',
+##    'values': '=Sheet1!$F$2:$F$181',
+##    'line': {
+##        'color': 'purple'
+##        }
+##    })
+##
+##chart1.set_x_axis({
+##    'label_position': 'none'
+##    })
+##
+##chart1.set_y_axis({
+##    'min': 0,
+##    'max': 100
+##    })
+##
+##worksheet.insert_chart('A9', chart1)
 workbook.close()
 
 os.startfile(symbol + '.xlsx')
