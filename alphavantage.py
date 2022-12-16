@@ -90,7 +90,7 @@ for i in range(20):
     date.pop()
 ##
 
-headings = ['Date', 'Upper Band', 'Middle Band', 'Lower Band', 'Actual']#, 'RSI']
+headings = ['Date', 'Upper Band', 'Middle Band', 'Lower Band', 'Actual'], 'RSI']
 upper = []
 middle = []
 lower = []
